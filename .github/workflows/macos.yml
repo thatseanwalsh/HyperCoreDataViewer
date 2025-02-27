@@ -35,6 +35,7 @@ jobs:
           brew install create-dmg
           mkdir -p dist/dmg
           create-dmg \
+            --debug
             --volname "HyperCore Data Viewer" \
             --window-pos 200 120 \
             --window-size 600 400 \
