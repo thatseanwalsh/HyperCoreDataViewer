@@ -26,7 +26,7 @@ jobs:
 
       - name: 🔨 Build macOS .app Bundle
         run: |
-          pyinstaller --noconfirm --onedir --windowed --name "HyperCore Data Viewer" \
+          pyinstaller --noconfirm --onedir --windowed --name "HyperCoreDataViewer" \
           --icon="src/assets/icon.icns" --add-data="src/assets/logo.png:." \
           --add-data="src/assets/icon.png:." src/app.py
 
@@ -35,7 +35,7 @@ jobs:
           brew install create-dmg
           mkdir -p dist/dmg
           create-dmg \
-            --volname "HyperCoreDataViewer" \
+            --volname "Hyper Core Data Viewer" \
             --window-pos 200 120 \
             --window-size 600 400 \
             --icon-size 100 \
