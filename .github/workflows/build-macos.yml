@@ -41,7 +41,7 @@ jobs:
             --icon-size 100 \
             --icon "HyperCoreDataViewer" 175 120 \
             --app-drop-link 425 120 \
-            "dist/dmg/HyperCoreDataViewer.dmg" "dist/HyperCoreDataViewer.app"
+            "dist/dmg/HyperCoreDataViewer-macOS.dmg" "dist/HyperCoreDataViewer.app"
 
       - name: 🏗 Upload DMG Artifact
         uses: actions/upload-artifact@v4
@@ -50,8 +50,7 @@ jobs:
           path: dist/dmg/HyperCoreDataViewer.dmg
 
       - name: 🚀 Publish Release
-        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/dmg/HyperCoreDataViewer.dmg
+          files: dist/dmg/HyperCoreDataViewer-macOS.dmg
           token: ${{ secrets.HYPERCOREDATAVIEWER }}
