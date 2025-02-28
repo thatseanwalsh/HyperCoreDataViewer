@@ -26,10 +26,9 @@ jobs:
 
       - name: 🔨 Build Windows .exe Bundle
         run: |
-          pyinstaller --noconfirm --windowed --name "HyperCoreDataViewer" `
+          pyinstaller --noconfirm --onefile --windowed --name "HyperCoreDataViewer" `
           --icon=assets/icon.ico --add-data "assets/logo.png;assets" `
-          --add-data "assets/icon.png;assets" --add-data "assets/icon.ico;assets" `
-          HyperCoreDataViewer.py
+          --add-data "assets/icon.png;assets" --add-data "assets/icon.ico;assets" HyperCoreDataViewer.py
 
       - name: 📂 Create EXE
         run: |
