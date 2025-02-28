@@ -41,3 +41,9 @@ jobs:
         with:
           name: HyperCoreDataViewer-Windows.zip
           path: dist/windows/HyperCoreDataViewer-Windows.zip
+
+      - name: 🚀 Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/windows/HyperCoreDataViewer-Windows.zip
+          token: ${{ secrets.HYPERCOREDATAVIEWER }}
