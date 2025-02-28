@@ -28,7 +28,7 @@ jobs:
         run: |
           pyinstaller --noconfirm --onedir --windowed --name "HyperCoreDataViewer" \
           --icon="assets/icon.icns" --add-data="assets/logo.png:." \
-          --add-data="assets/icon.png:." app.py
+          --add-data="assets/icon.png:." HyperCoreDataViewer.py
 
       - name: 📂 Create DMG
         run: |
