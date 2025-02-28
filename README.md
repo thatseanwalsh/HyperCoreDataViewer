@@ -2,9 +2,8 @@
 # HyperCore API Data Viewer
 [![Release](https://img.shields.io/github/v/release/thatseanwalsh/hypercoredataviewer.svg?style=flat-square)](https://github.com/thatseanwalsh/HyperCoreDataViewer/releases/latest)
 [![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/thatseanwalsh/hypercoredataviewer/total?style=flat-square)](https://github.com/thatseanwalsh/HyperCoreDataViewer/releases)
-[![Build MacOS DMG](https://img.shields.io/github/actions/workflow/status/thatseanwalsh/hypercoredataviewer/macos.yml?style=flat-square)](https://github.com/thatseanwalsh/HyperCoreDataViewer/actions/workflows/build-macos.yml)
-[![Build Windows DMG](https://img.shields.io/github/actions/workflow/status/thatseanwalsh/hypercoredataviewer/macos.yml?style=flat-square)](https://github.com/thatseanwalsh/HyperCoreDataViewer/actions/workflows/build-windows.yml)
-
+[![Build MacOS DMG](https://img.shields.io/github/actions/workflow/status/thatseanwalsh/hypercoredataviewer/build-macos.yml?style=flat-square)](https://github.com/thatseanwalsh/HyperCoreDataViewer/actions/workflows/build-macos.yml)
+[![Build Windows DMG](https://img.shields.io/github/actions/workflow/status/thatseanwalsh/hypercoredataviewer/build-windows.yml?style=flat-square)](https://github.com/thatseanwalsh/HyperCoreDataViewer/actions/workflows/build-windows.yml)
 
 <!-- TABLE OF CONTENTS -->
 <details>
