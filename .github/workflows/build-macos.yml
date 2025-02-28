@@ -26,7 +26,7 @@ jobs:
 
       - name: 🔨 Build macOS .app Bundle
         run: |
-          pyinstaller --noconfirm --onedir --windowed --name "HyperCoreDataViewer" \
+          pyinstaller --noconfirm --onedir --windowed --name "HyperCore Data Viewer" \
           --icon="assets/icon.icns" --add-data="assets/logo.png:." \
           --add-data="assets/icon.png:." HyperCoreDataViewer.py
 
