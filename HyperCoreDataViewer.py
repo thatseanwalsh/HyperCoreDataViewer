@@ -40,7 +40,7 @@ class ClusterApp:
         self.processed_cluster = {}
         self.setup_gui()
 
-        # GUI setup, logos, icons, and the like
+    # GUI setup, logos, icons, and the like
     def setup_gui(self):
         def resource_path(relative_path):
             if getattr(sys, 'frozen', False):  # Compiled bundle check
@@ -67,6 +67,7 @@ class ClusterApp:
         logo_path = resource_path("logo.png")
         icon_image = Image.open(icon_png_path)
 
+        ctk.set_appearance_mode("dark")
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         window_width = 1024
@@ -191,7 +192,6 @@ class ClusterApp:
 
         self.cluster_frame.pack_forget()
         self.vm_frame.pack_forget()
-        #self.node_frame.pack_forget()
 
         self.button_frame = ctk.CTkFrame(self.root)
         self.button_frame.pack(pady=(0,10))
@@ -228,6 +228,15 @@ class ClusterApp:
         settings_window.transient(self.root)
         settings_window.focus_set()
         settings_window.grab_set()
+        ctk.set_appearance_mode("dark")
+        if platform.system() == "Windows":
+            icon_path = resource_path("icon.ico")  # .ico for Windows
+            settings_window.iconbitmap(icon_path)
+        elif platform.system() == "Darwin":
+            icon_path = resource_path("icon.icns")  # .icns for macOS
+            icon_image = Image.open(icon_path)
+            icon_photo = ImageTk.PhotoImage(icon_image)
+            settings_window.iconphoto(True, icon_photo)
 
         window_width = 300
         window_height = 230
@@ -381,6 +390,15 @@ class ClusterApp:
         x = (message_box.winfo_screenwidth() // 2) - (width // 2)
         y = (message_box.winfo_screenheight() // 2) - (height // 2)
         message_box.geometry(f"{width}x{height}+{x}+{y}")
+        ctk.set_appearance_mode("dark")
+        if platform.system() == "Windows":
+            icon_path = resource_path("icon.ico")  # .ico for Windows
+            message_box.iconbitmap(icon_path)
+        elif platform.system() == "Darwin":
+            icon_path = resource_path("icon.icns")  # .icns for macOS
+            icon_image = Image.open(icon_path)
+            icon_photo = ImageTk.PhotoImage(icon_image)
+            message_box.iconphoto(True, icon_photo)
 
         frame = ctk.CTkFrame(message_box)
         frame.pack(pady=20, padx=20, fill='both')
