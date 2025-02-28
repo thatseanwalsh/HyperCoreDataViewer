@@ -40,10 +40,11 @@ class ClusterApp:
         # GUI setup, logos, icons, and the like
     def setup_gui(self):
         def resource_path(relative_path):
-            if getattr(sys, 'frozen', False):  # Running in a compiled bundle
+            if getattr(sys, 'frozen', False):  # Compiled bundle check
                 base_path = os.path.dirname(sys.executable)
 
                 if platform.system() == "Windows":
+                    base_path = sys._MEIPASS
                     return os.path.join(base_path, "assets", relative_path)  # Adjust for Windows
                 elif platform.system() == "Darwin": 
                     return os.path.join(base_path, "../Resources", relative_path)  # Adjust for macOS
