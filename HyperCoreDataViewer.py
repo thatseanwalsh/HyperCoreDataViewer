@@ -5,9 +5,10 @@ __email__ = "swalsh@scalecomputing.com"
 __status__ = "Development"
 
 """
-app.py: An application to use the Scale Computing HyperCore API 
-        to export cluster and virtual machine data for the purpose 
-        of viewing and exporting to a spreadsheet.
+HyperCoreDataViewer.py: An application to use the Scale Computing 
+                        HyperCore API to export cluster and virtual 
+                        machine data for the purpose of viewing and 
+                        exporting to a spreadsheet.
 """
 
 import customtkinter as ctk
