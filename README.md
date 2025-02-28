@@ -12,6 +12,7 @@
     <li><a href="#about">Screenshots</a></li>
     <li><a href="#instructions">Instructions</a></li>
     <li><a href="#disclaimer">Disclaimer</a></li>
+    <li><a href="#disclaimer">Copyright</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
@@ -44,6 +45,10 @@ How to use the application:
 <!-- DISCLAIMER -->
 ### Disclaimer
 This tool is not endorsed or supported by Scale Computing. Please use at your own risk.
+
+<!-- COPYRIGHT -->
+### Copyright
+Scale Computing HyperCore and assorted images are registered trademarks/copyright of [Scale Computing](https://www.scalecomputing.com/).
 
 <!-- ROADMAP -->
 ### Roadmap
