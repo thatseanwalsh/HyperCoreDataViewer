@@ -47,7 +47,7 @@ class ClusterApp:
                     return os.path.join(base_path, "assets", relative_path)  # Adjust for Windows
                 elif platform.system() == "Darwin": 
                     return os.path.join(base_path, "../Resources", relative_path)  # Adjust for macOS
-            else:  # Running as a script
+            else:
                 return os.path.join(os.path.abspath("./assets"), relative_path) # Adjust for CLI
         
         self.root.title("SC//HyperCore Data Viewer")
