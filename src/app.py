@@ -39,18 +39,18 @@ class ClusterApp:
     def setup_gui(self):
         def resource_path(relative_path):
             if getattr(sys, 'frozen', False):
-                # Running in a PyInstaller bundle
-                base_path = os.path.dirname(sys.executable)  # Points to Contents/MacOS/
-                return os.path.join(base_path, "../Resources", relative_path)  # Move up to Contents/Resources
+                # Running in a compiled bundle
+                base_path = os.path.dirname(sys.executable)  
+                return os.path.join(base_path, "../Resources", relative_path)
             else:
                 # Running as a script
-                return os.path.join(os.path.abspath("."), relative_path)
+                return os.path.join(os.path.abspath("../assets"), relative_path)
         
         self.root.title("SC//HyperCore Data Viewer")
-        icon_path = resource_path("assets/icon.icns")
+        icon_path = resource_path("icon.icns")
         self.root.iconbitmap(icon_path) 
-        icon_png_path = resource_path("assets/icon.png")
-        logo_path = resource_path("assets/logo.png")
+        icon_png_path = resource_path("icon.png")
+        logo_path = resource_path("logo.png")
         icon_image = Image.open(icon_png_path)
         icon_photo = ImageTk.PhotoImage(icon_image)
         self.root.iconphoto(True, icon_photo)
@@ -102,7 +102,7 @@ class ClusterApp:
         self.cluster_frame.pack(fill=ctk.BOTH, expand=True)
         self.cluster_tree = ttk.Treeview(self.cluster_frame, show="headings")
 
-        # Create Scrollbars
+        # Create scrollbars
         self.vm_tree_scroll_x = ctk.CTkScrollbar(self.vm_frame, orientation="horizontal", command=self.vm_tree.xview)
         self.vm_tree_scroll_x.pack(side=ctk.BOTTOM, fill=ctk.X)
         self.vm_tree_scroll_y = ctk.CTkScrollbar(self.vm_frame, orientation="vertical", command=self.vm_tree.yview)
@@ -127,6 +127,7 @@ class ClusterApp:
         self.vm_tree_scroll_y.configure(command=self.vm_tree.yview)
         self.cluster_tree_scroll_y.configure(command=self.cluster_tree.yview)
 
+        # Treeview styling
         style = ttk.Style()
         style.theme_use("default")  
         style.configure("Treeview.Heading",
