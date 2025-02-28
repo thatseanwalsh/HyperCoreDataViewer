@@ -25,6 +25,9 @@ import os
 import sys
 import platform
 
+# Global dark mode
+ctk.set_appearance_mode("dark")
+
 class ClusterApp:
     def __init__(self, root):
         self.root = root
