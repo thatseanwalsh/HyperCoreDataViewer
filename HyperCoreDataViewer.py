@@ -51,13 +51,17 @@ class ClusterApp:
                 return os.path.join(os.path.abspath("./assets"), relative_path) # Adjust for CLI
         
         self.root.title("SC//HyperCore Data Viewer")
-        icon_path = resource_path("icon.icns")
-        self.root.iconbitmap(icon_path) 
+        if platform.system() == "Windows":
+            icon_path = resource_path("icon.ico")  # .ico for Windows
+            self.root.iconbitmap(icon_path)
+        elif platform.system() == "Darwin":
+            icon_path = resource_path("icon.icns")  # .icns for macOS
+            icon_image = Image.open(icon_path)
+            icon_photo = ImageTk.PhotoImage(icon_image)
+            self.root.iconphoto(True, icon_photo)
         icon_png_path = resource_path("icon.png")
         logo_path = resource_path("logo.png")
         icon_image = Image.open(icon_png_path)
-        icon_photo = ImageTk.PhotoImage(icon_image)
-        self.root.iconphoto(True, icon_photo)
 
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
