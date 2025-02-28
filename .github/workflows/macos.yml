@@ -35,14 +35,21 @@ jobs:
           brew install create-dmg
           mkdir -p dist/dmg
           create-dmg \
-            --debug
             --volname "HyperCore Data Viewer" \
             --window-pos 200 120 \
             --window-size 600 400 \
             --icon-size 100 \
-            --icon "HyperCoreDataViewer.app" 175 120 \
-            --app-drop-link 425 120 \
+            --icon "HyperCoreDataViewer" 175 120 \
             "dist/dmg/HyperCoreDataViewer.dmg" "dist/HyperCoreDataViewer.app"
+
+          # Mount the DMG
+          MOUNT_DIR=$(hdiutil attach "dist/dmg/HyperCoreDataViewer.dmg" | grep Volumes | awk '{print $3}')
+          
+          # Manually create Applications symlink
+          ln -s /Applications "$MOUNT_DIR/Applications"
+
+          # Unmount DMG
+          hdiutil detach "$MOUNT_DIR"
 
       - name: 🏗 Upload DMG Artifact
         uses: actions/upload-artifact@v4
