@@ -27,6 +27,15 @@ Tool to view and export informational data via the SC//HyperCore API for a [Scal
 
 <!-- INSTRUCTIONS -->
 ### Instructions
+If you receive an error stating that Apple could not verify the app, do the following:
+1. Ensure you downloaded the application from [this repository](https://github.com/thatseanwalsh/HyperCoreDataViewer/releases).
+2. Then, on your Mac, choose Apple menu  > System Settings.
+3. Next, click Privacy & Security in the sidebar. (You may need to scroll down.)
+4. Go to Security, then click Open.
+5. Click Open Anyway.
+6. Enter your credentials, then click OK.
+
+How to use the application:
 1. Create a read-only user in your SC//HyperCore user interface.
 2. Click 'Settings' to enter cluster credentials.
 3. Click 'Fetch Data' to load the cluster's information.
