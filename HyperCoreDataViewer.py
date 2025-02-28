@@ -228,7 +228,6 @@ class ClusterApp:
         settings_window.transient(self.root)
         settings_window.focus_set()
         settings_window.grab_set()
-        ctk.set_appearance_mode("dark")
         if platform.system() == "Windows":
             icon_path = resource_path("icon.ico")  # .ico for Windows
             settings_window.iconbitmap(icon_path)
@@ -390,7 +389,6 @@ class ClusterApp:
         x = (message_box.winfo_screenwidth() // 2) - (width // 2)
         y = (message_box.winfo_screenheight() // 2) - (height // 2)
         message_box.geometry(f"{width}x{height}+{x}+{y}")
-        ctk.set_appearance_mode("dark")
         if platform.system() == "Windows":
             icon_path = resource_path("icon.ico")  # .ico for Windows
             message_box.iconbitmap(icon_path)
