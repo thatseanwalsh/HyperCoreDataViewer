@@ -1,8 +1,9 @@
 <a id="readme-top"></a>
 # HyperCore API Data Viewer
-[![Release](https://img.shields.io/github/v/release/thatseanwalsh/hypercoredataviewer.svg?style=flat-square)](https://github.com/thatseanwalsh/hypercoredataviewer/releases/latest)
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/thatseanwalsh/hypercoredataviewer/total?style=flat-square)
-![Build MacOS DMG](https://img.shields.io/github/actions/workflow/status/thatseanwalsh/hypercoredataviewer/macos.yml?style=flat-square)
+[![Release](https://img.shields.io/github/v/release/thatseanwalsh/hypercoredataviewer.svg?style=flat-square)](https://github.com/thatseanwalsh/HyperCoreDataViewer/releases/latest)
+[![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/thatseanwalsh/hypercoredataviewer/total?style=flat-square)](https://github.com/thatseanwalsh/HyperCoreDataViewer/releases)
+[![Build MacOS DMG](https://img.shields.io/github/actions/workflow/status/thatseanwalsh/hypercoredataviewer/macos.yml?style=flat-square)](https://github.com/thatseanwalsh/HyperCoreDataViewer/actions/workflows/macos.yml)
+
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -19,15 +20,15 @@
 </details>
 
 <!-- ABOUT -->
-### About
+## About
 Tool to view and export informational data via the SC//HyperCore API for a [Scale Computing](https://www.scalecomputing.com) environment.
 
 <!-- SCREENSHOTS -->
-### Screenshots
+## Screenshots
 <img src="images/cluster-view.png" width="300" /> <img src="images/vm-view.png" width="300"/>
 
 <!-- INSTRUCTIONS -->
-### Instructions
+## Instructions
 If you receive an error stating that Apple could not verify the app, do the following:
 1. Ensure you downloaded the application from [this repository](https://github.com/thatseanwalsh/HyperCoreDataViewer/releases).
 2. Then, on your Mac, choose Apple menu  > System Settings.
@@ -43,20 +44,21 @@ How to use the application:
 4. Click 'Export' to export the collected data to a spreadsheet.
 
 <!-- DISCLAIMER -->
-### Disclaimer
+## Disclaimer
 This tool is not endorsed or supported by Scale Computing. Please use at your own risk.
 
 <!-- COPYRIGHT -->
-### Copyright
+## Copyright
 Scale Computing HyperCore and related images are registered trademarks/copyrights of [Scale Computing](https://www.scalecomputing.com/).
 
 <!-- ROADMAP -->
-### Roadmap
+## Roadmap
 - [ ] Package for Windows
 - [ ] Add a new tab for node-specific information
+- [ ] See what else I can add that is of value
 
 <!-- CONTACT -->
-### Contact
+## Contact
 Submit an issue/request: [Issues](https://github.com/thatseanwalsh/HyperCoreDataViewer/issues)
 
 Project link: [https://github.com/thatseanwalsh/HyperCoreDataViewer](https://github.com/thatseanwalsh/HyperCoreDataViewer)
