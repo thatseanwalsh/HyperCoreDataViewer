@@ -23,7 +23,6 @@ import xml.etree.ElementTree as ET
 from tkinter import font
 import os
 import sys
-import platform
 
 class ClusterApp:
     def __init__(self, root):
@@ -37,18 +36,16 @@ class ClusterApp:
         self.processed_cluster = {}
         self.setup_gui()
 
-        # GUI setup, logos, icons, and the like
+    # GUI setup, logos, icons, and the like
     def setup_gui(self):
         def resource_path(relative_path):
-            if getattr(sys, 'frozen', False):  # Running in a compiled bundle
-                base_path = os.path.dirname(sys.executable)
-
-                if platform.system() == "Windows":
-                    return os.path.join(base_path, "assets", relative_path)  # Adjust for Windows
-                elif platform.system() == "Darwin": 
-                    return os.path.join(base_path, "../Resources", relative_path)  # Adjust for macOS
-            else:  # Running as a script
-                return os.path.join(os.path.abspath("./assets"), relative_path) # Adjust for CLI
+            if getattr(sys, 'frozen', False):
+                # Running in a compiled bundle
+                base_path = os.path.dirname(sys.executable)  
+                return os.path.join(base_path, "../Resources", relative_path)
+            else:
+                # Running as a script
+                return os.path.join(os.path.abspath("../assets"), relative_path)
         
         self.root.title("SC//HyperCore Data Viewer")
         icon_path = resource_path("icon.icns")
@@ -82,11 +79,8 @@ class ClusterApp:
         self.view_button1 = ctk.CTkButton(self.button_frame_top, text="Cluster", command=self.switch_view_cluster, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
         self.view_button1.pack(side=ctk.LEFT, padx=10, pady=10)
 
-        self.view_button2 = ctk.CTkButton(self.button_frame_top, text="Node", command=self.switch_view_node, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.view_button2 = ctk.CTkButton(self.button_frame_top, text="Virtual Machines", command=self.switch_view_vm, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
         self.view_button2.pack(side=ctk.LEFT, padx=10, pady=10)
-
-        self.view_button3 = ctk.CTkButton(self.button_frame_top, text="Virtual Machines", command=self.switch_view_vm, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
-        self.view_button3.pack(side=ctk.LEFT, padx=10, pady=10)
 
         # Instructions box
         self.instructions = ctk.CTkTextbox(self.top_frame, height=150, width=500, font=("Martel Sans", 12), padx=10)
@@ -101,17 +95,13 @@ class ClusterApp:
         self.main_frame = ctk.CTkFrame(self.root)
         self.main_frame.pack(fill=ctk.BOTH, expand=True, padx=20, pady=(10,10))
 
-        self.cluster_frame = ctk.CTkFrame(self.main_frame)
-        self.cluster_frame.pack(fill=ctk.BOTH, expand=True)
-        self.cluster_tree = ttk.Treeview(self.cluster_frame, show="headings")
-
-        self.node_frame = ctk.CTkFrame(self.main_frame)
-        self.node_frame.pack(fill=ctk.BOTH, expand=True)
-        self.node_tree = ttk.Treeview(self.node_frame, show="headings")
-
         self.vm_frame = ctk.CTkFrame(self.main_frame)
         self.vm_frame.pack(fill=ctk.BOTH, expand=True)
         self.vm_tree = ttk.Treeview(self.vm_frame, show="headings")
+
+        self.cluster_frame = ctk.CTkFrame(self.main_frame)
+        self.cluster_frame.pack(fill=ctk.BOTH, expand=True)
+        self.cluster_tree = ttk.Treeview(self.cluster_frame, show="headings")
 
         # Create scrollbars
         self.vm_tree_scroll_x = ctk.CTkScrollbar(self.vm_frame, orientation="horizontal", command=self.vm_tree.xview)
@@ -120,8 +110,6 @@ class ClusterApp:
         self.vm_tree_scroll_y.pack(side=ctk.RIGHT, fill=ctk.Y)
         self.cluster_tree_scroll_y = ctk.CTkScrollbar(self.cluster_frame, orientation="vertical", command=self.cluster_tree.yview)
         self.cluster_tree_scroll_y.pack(side=ctk.RIGHT, fill=ctk.Y)
-        self.node_tree_scroll_y = ctk.CTkScrollbar(self.node_frame, orientation="vertical", command=self.node_tree.yview)
-        self.node_tree_scroll_y.pack(side=ctk.RIGHT, fill=ctk.Y)
         
         # Create treeview
         self.vm_tree = ttk.Treeview(
@@ -130,18 +118,15 @@ class ClusterApp:
             yscrollcommand=self.vm_tree_scroll_y.set
         )
         self.cluster_tree = ttk.Treeview(self.cluster_frame, show="headings", yscrollcommand=self.cluster_tree_scroll_y.set)
-        self.node_tree = ttk.Treeview(self.node_frame, show="headings", yscrollcommand=self.node_tree_scroll_y.set)
-
+        
         # Pack the treeview 
-        self.cluster_tree.pack(fill=ctk.BOTH, expand=True, padx=(0, 10), pady=(0, 10))
-        self.node_tree.pack(fill=ctk.BOTH, expand=True, padx=(0, 10), pady=(0, 10))
         self.vm_tree.pack(fill=ctk.BOTH, expand=True, padx=(0, 10), pady=(0, 10))
+        self.cluster_tree.pack(fill=ctk.BOTH, expand=True, padx=(0, 10), pady=(0, 10))
 
         # Configure treeview scrollbars
         self.vm_tree_scroll_x.configure(command=self.vm_tree.xview)
         self.vm_tree_scroll_y.configure(command=self.vm_tree.yview)
         self.cluster_tree_scroll_y.configure(command=self.cluster_tree.yview)
-        self.node_tree_scroll_y.configure(command=self.node_tree.yview)
 
         # Treeview styling
         style = ttk.Style()
@@ -171,19 +156,15 @@ class ClusterApp:
                 background=[("selected", "#e67b34")],
                 foreground=[("selected", "#ffffff")])
 
-        self.cluster_tree.pack(fill=ctk.BOTH, expand=True, padx=10, pady=10)
-        self.cluster_tree.tag_configure('oddrow', background='#2e2e2e')
-        self.cluster_tree.tag_configure('evenrow', background='#1e1e1e')
-        self.node_tree.pack(fill=ctk.BOTH, expand=True, padx=10, pady=10)
-        self.node_tree.tag_configure('oddrow', background='#2e2e2e')
-        self.node_tree.tag_configure('evenrow', background='#1e1e1e')
         self.vm_tree.pack(fill=ctk.BOTH, expand=True, padx=10, pady=10)
         self.vm_tree.tag_configure('oddrow', background='#2e2e2e')
         self.vm_tree.tag_configure('evenrow', background='#1e1e1e')
+        self.cluster_tree.pack(fill=ctk.BOTH, expand=True, padx=10, pady=10)
+        self.cluster_tree.tag_configure('oddrow', background='#2e2e2e')
+        self.cluster_tree.tag_configure('evenrow', background='#1e1e1e')
 
-        self.cluster_frame.pack_forget()
         self.vm_frame.pack_forget()
-        #self.node_frame.pack_forget()
+        self.cluster_frame.pack_forget()
 
         self.button_frame = ctk.CTkFrame(self.root)
         self.button_frame.pack(pady=(0,10))
@@ -194,23 +175,15 @@ class ClusterApp:
         self.export_button = ctk.CTkButton(self.button_frame, text="Export", command=self.export, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
         self.export_button.pack(side=ctk.LEFT, padx=10, pady=10)
 
-    def switch_view_cluster(self):
-        self.fetch_data(view_type="cluster")
-        self.cluster_frame.pack(fill=ctk.BOTH, expand=True)
-        self.vm_frame.pack_forget() 
-        self.node_frame.pack_forget() 
-
-    def switch_view_node(self):
-        self.fetch_data(view_type="node")
-        self.node_frame.pack(fill=ctk.BOTH, expand=True)
-        self.vm_frame.pack_forget()
-        self.cluster_frame.pack_forget()
-
     def switch_view_vm(self):
         self.fetch_data(view_type="vm")
         self.vm_frame.pack(fill=ctk.BOTH, expand=True)
         self.cluster_frame.pack_forget()
-        self.node_frame.pack_forget()
+
+    def switch_view_cluster(self):
+        self.fetch_data(view_type="cluster")
+        self.cluster_frame.pack(fill=ctk.BOTH, expand=True)
+        self.vm_frame.pack_forget() 
 
     # Settings modal
     def open_settings(self, view_type="cluster"):
@@ -261,36 +234,6 @@ class ClusterApp:
         
         frame.columnconfigure(1, weight=1)
 
-    def update_cluster_columns(self, columns):
-        for col in self.cluster_tree["columns"]:
-            self.cluster_tree.heading(col, text="")
-        
-        self.cluster_tree["columns"] = columns
-        for col in columns:
-            self.cluster_tree.heading(col, text=col, anchor="w")
-            if col in ["Tag"]:
-                self.cluster_tree.column(col, anchor="w", width=200, stretch=False)
-            else:
-                self.cluster_tree.column(col, anchor="w", width=750, stretch=True)
-        
-        for item in self.cluster_tree.get_children():
-            self.cluster_tree.delete(item)
-
-    def update_node_columns(self, columns):
-        for col in self.node_tree["columns"]:
-            self.node_tree.heading(col, text="")
-        
-        self.node_tree["columns"] = columns
-        for col in columns:
-            self.node_tree.heading(col, text=col, anchor="w")
-            if col in ["TO BE DEFINED"]:
-                self.node_tree.column(col, anchor="w", width=200, stretch=False)
-            else:
-                self.node_tree.column(col, anchor="w", width=750, stretch=True)
-        
-        for item in self.node_tree.get_children():
-            self.node_tree.delete(item)     
-
     def update_vm_columns(self, columns):
         for col in self.vm_tree["columns"]:
             self.vm_tree.heading(col, text="", anchor="w")
@@ -310,6 +253,21 @@ class ClusterApp:
         
         for item in self.vm_tree.get_children():
             self.vm_tree.delete(item)
+
+    def update_cluster_columns(self, columns):
+        for col in self.cluster_tree["columns"]:
+            self.cluster_tree.heading(col, text="")
+        
+        self.cluster_tree["columns"] = columns
+        for col in columns:
+            self.cluster_tree.heading(col, text=col, anchor="w")
+            if col in ["Tag"]:
+                self.cluster_tree.column(col, anchor="w", width=200, stretch=False)
+            else:
+                self.cluster_tree.column(col, anchor="w", width=750, stretch=True)
+        
+        for item in self.cluster_tree.get_children():
+            self.cluster_tree.delete(item)     
 
     def sort_vm_tree(self, col, reverse=False):
         children = self.vm_tree.get_children("")
@@ -349,17 +307,13 @@ class ClusterApp:
     def alternate_row_colors(self):
         children = self.vm_tree.get_children()
         
-        for index, item in enumerate(self.cluster_tree.get_children()):
-            tag = 'evenrow' if index % 2 == 0 else 'oddrow'
-            self.cluster_tree.item(item, tags=(tag,))
-
-        for index, item in enumerate(self.node_tree.get_children()):
-            tag = 'evenrow' if index % 2 == 0 else 'oddrow'
-            self.node_tree.item(item, tags=(tag,))
-
         for index, item in enumerate(self.vm_tree.get_children()):
             tag = 'evenrow' if index % 2 == 0 else 'oddrow'
             self.vm_tree.item(item, tags=(tag,))
+
+        for index, item in enumerate(self.cluster_tree.get_children()):
+            tag = 'evenrow' if index % 2 == 0 else 'oddrow'
+            self.cluster_tree.item(item, tags=(tag,))
     
     # Error/message box 
     def show_message_box(self, error_message):
