@@ -48,7 +48,7 @@ This tool is not endorsed or supported by Scale Computing. Please use at your ow
 
 <!-- COPYRIGHT -->
 ### Copyright
-Scale Computing HyperCore and assorted images are registered trademarks/copyright of [Scale Computing](https://www.scalecomputing.com/).
+Scale Computing HyperCore and related images are registered trademarks/copyrights of [Scale Computing](https://www.scalecomputing.com/).
 
 <!-- ROADMAP -->
 ### Roadmap
