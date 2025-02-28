@@ -47,10 +47,10 @@ class ClusterApp:
                 return os.path.join(os.path.abspath("."), relative_path)
         
         self.root.title("SC//HyperCore Data Viewer")
-        icon_path = resource_path("icon.icns")
+        icon_path = resource_path("assets/icon.icns")
         self.root.iconbitmap(icon_path) 
-        icon_png_path = resource_path("icon.png")
-        logo_path = resource_path("logo.png")
+        icon_png_path = resource_path("assets/icon.png")
+        logo_path = resource_path("assets/logo.png")
         icon_image = Image.open(icon_png_path)
         icon_photo = ImageTk.PhotoImage(icon_image)
         self.root.iconphoto(True, icon_photo)
