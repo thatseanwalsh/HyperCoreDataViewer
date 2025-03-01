@@ -55,7 +55,7 @@ class ClusterApp:
                 return os.path.join(os.path.abspath("./assets"), relative_path) # Adjust for CLI
         
         self.root.title("SC//HyperCore Data Viewer")
-        self.root.configure(bg="#1e1e1e") 
+        self.root.configure(bg="#2e2e2e") 
         if platform.system() == "Windows":
             icon_path = resource_path("icon.ico")  # .ico for Windows
             self.root.iconbitmap(icon_path)
@@ -223,12 +223,12 @@ class ClusterApp:
     # Settings modal
     def open_settings(self, view_type="cluster"):
         self.current_view = view_type 
-        settings_window = Toplevel(self.root)
+        settings_window = ctk.CTkToplevel(self.root)
         settings_window.title("Settings")
         settings_window.transient(self.root)
         settings_window.focus_set()
         settings_window.grab_set()
-        settings_window.configure(bg="#1e1e1e")
+        settings_window.configure(bg="#2e2e2e")
         ctk.set_appearance_mode("dark")
 
         window_width = 300
@@ -373,10 +373,10 @@ class ClusterApp:
     
     # Error/message box 
     def show_message_box(self, error_message):
-        message_box = Toplevel(self.root)
+        message_box = ctk.CTkToplevel(self.root)
         message_box.title("Message")
         message_box.transient(self.root)
-        message_box.configure(bg="#1e1e1e") 
+        message_box.configure(bg="#2e2e2e") 
         message_box.grab_set()
         message_box.focus_set()
         width = 250
