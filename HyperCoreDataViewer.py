@@ -270,6 +270,9 @@ class ClusterApp:
         
         frame.columnconfigure(1, weight=1)
 
+        for widget in settings_window.winfo_children():
+            widget.configure(fg_color="#2e2e2e", bg_color="#1e1e1e", text_color="white")
+
     def update_cluster_columns(self, columns):
         for col in self.cluster_tree["columns"]:
             self.cluster_tree.heading(col, text="")
