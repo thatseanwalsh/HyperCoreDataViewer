@@ -399,6 +399,9 @@ class ClusterApp:
 
         message_box.protocol("WM_DELETE_WINDOW", message_box.destroy)
 
+        for widget in message_box.winfo_children():
+            widget.configure(fg_color="#2e2e2e", bg_color="#1e1e1e", text_color="white")
+
     # Data fetch
     def fetch_data(self, view_type):
         host = self.cluster_ip
