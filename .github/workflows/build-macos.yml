@@ -47,7 +47,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: MyApp.dmg
-          path: dist/dmg/HyperCoreDataViewer.dmg
+          path: dist/dmg/HyperCoreDataViewer-macOS.dmg
 
       - name: 🚀 Publish Release
         uses: softprops/action-gh-release@v2
