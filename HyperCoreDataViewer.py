@@ -24,9 +24,15 @@ from tkinter import font
 import os
 import sys
 import platform
+import ctypes
 
-# Global dark mode
+# Global dark mode settings (fixes Windows issues)
 ctk.set_appearance_mode("dark")
+def apply_dark_title_bar(window):
+            if platform == "Windows": 
+                    hwnd = ctypes.windll.user32.GetParent(window.winfo_id())  
+                    DWMWA_USE_IMMERSIVE_DARK_MODE = 20  # Dark mode flag
+                    ctypes.windll.dwmapi.DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ctypes.byref(ctypes.c_int(1)), ctypes.sizeof(ctypes.c_int(1)))
 
 class ClusterApp:
     def __init__(self, root):
@@ -40,32 +46,32 @@ class ClusterApp:
         self.processed_cluster = {}
         self.setup_gui()
 
+    def resource_path(self, relative_path):
+        if getattr(sys, 'frozen', False):  # Compiled bundle check
+            base_path = os.path.dirname(sys.executable)
+
+            if platform.system() == "Windows":
+                base_path = sys._MEIPASS
+                return os.path.join(base_path, "assets", relative_path)  # Adjust for Windows
+            elif platform.system() == "Darwin": 
+                return os.path.join(base_path, "../Resources", relative_path)  # Adjust for macOS
+        else:
+            return os.path.join(os.path.abspath("./assets"), relative_path) # Adjust for CLI
+
     # GUI setup, logos, icons, and the like
     def setup_gui(self):
-        def resource_path(relative_path):
-            if getattr(sys, 'frozen', False):  # Compiled bundle check
-                base_path = os.path.dirname(sys.executable)
-
-                if platform.system() == "Windows":
-                    base_path = sys._MEIPASS
-                    return os.path.join(base_path, "assets", relative_path)  # Adjust for Windows
-                elif platform.system() == "Darwin": 
-                    return os.path.join(base_path, "../Resources", relative_path)  # Adjust for macOS
-            else:
-                return os.path.join(os.path.abspath("./assets"), relative_path) # Adjust for CLI
-        
         self.root.title("SC//HyperCore Data Viewer")
         self.root.configure(bg="#2e2e2e") 
         if platform.system() == "Windows":
-            icon_path = resource_path("icon.ico")  # .ico for Windows
+            icon_path = self.resource_path("icon.ico")
             self.root.iconbitmap(icon_path)
         elif platform.system() == "Darwin":
-            icon_path = resource_path("icon.icns")  # .icns for macOS
+            icon_path = self.resource_path("icon.icns")
             icon_image = Image.open(icon_path)
             icon_photo = ImageTk.PhotoImage(icon_image)
             self.root.iconphoto(True, icon_photo)
-        icon_png_path = resource_path("icon.png")
-        logo_path = resource_path("logo.png")
+        icon_png_path = self.resource_path("icon.png")
+        logo_path = self.resource_path("logo.png")
         icon_image = Image.open(icon_png_path)
 
         screen_width = self.root.winfo_screenwidth()
@@ -225,11 +231,21 @@ class ClusterApp:
         self.current_view = view_type 
         settings_window = ctk.CTkToplevel(self.root)
         settings_window.title("Settings")
+        settings_window.iconbitmap("icon.ico")
         settings_window.transient(self.root)
         settings_window.focus_set()
         settings_window.grab_set()
         settings_window.configure(bg="#2e2e2e")
         ctk.set_appearance_mode("dark")
+        apply_dark_title_bar(settings_window)
+        if platform.system() == "Windows":
+            icon_path = self.resource_path("icon.ico") 
+            settings_window.iconbitmap(icon_path)
+        elif platform.system() == "Darwin":
+            icon_path = self.resource_path("icon.icns")
+            icon_image = Image.open(icon_path)
+            icon_photo = ImageTk.PhotoImage(icon_image)
+            settings_window.iconphoto(True, icon_photo)
 
         window_width = 300
         window_height = 230
@@ -376,7 +392,12 @@ class ClusterApp:
         message_box = ctk.CTkToplevel(self.root)
         message_box.title("Message")
         message_box.transient(self.root)
-        message_box.configure(bg="#2e2e2e") 
+        message_box.configure(bg="#2e2e2e")
+        if platform.system() == "Windows":
+            message_box.iconbitmap(self.root.iconbitmap)
+        elif platform.system() == "Darwin":
+            message_box.iconphoto(True, self.root.iconphoto) 
+        apply_dark_title_bar(message_box)
         message_box.grab_set()
         message_box.focus_set()
         width = 250
@@ -610,7 +631,7 @@ class ClusterApp:
 
         file_path = filedialog.asksaveasfilename(defaultextension=".xlsx", filetypes=[("Excel files", "*.xlsx"), ("All Files", "*.*")])
         if not file_path:
-            return 
+            return
 
         # Prepare VM data
         vm_data = []
