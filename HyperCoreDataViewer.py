@@ -228,14 +228,7 @@ class ClusterApp:
         settings_window.transient(self.root)
         settings_window.focus_set()
         settings_window.grab_set()
-        if platform.system() == "Windows":
-            icon_path = resource_path("icon.ico")  # .ico for Windows
-            settings_window.iconbitmap(icon_path)
-        elif platform.system() == "Darwin":
-            icon_path = resource_path("icon.icns")  # .icns for macOS
-            icon_image = Image.open(icon_path)
-            icon_photo = ImageTk.PhotoImage(icon_image)
-            settings_window.iconphoto(True, icon_photo)
+        ctk.set_appearance_mode("dark")
 
         window_width = 300
         window_height = 230
@@ -389,14 +382,7 @@ class ClusterApp:
         x = (message_box.winfo_screenwidth() // 2) - (width // 2)
         y = (message_box.winfo_screenheight() // 2) - (height // 2)
         message_box.geometry(f"{width}x{height}+{x}+{y}")
-        if platform.system() == "Windows":
-            icon_path = resource_path("icon.ico")  # .ico for Windows
-            message_box.iconbitmap(icon_path)
-        elif platform.system() == "Darwin":
-            icon_path = resource_path("icon.icns")  # .icns for macOS
-            icon_image = Image.open(icon_path)
-            icon_photo = ImageTk.PhotoImage(icon_image)
-            message_box.iconphoto(True, icon_photo)
+        ctk.set_appearance_mode("dark")
 
         frame = ctk.CTkFrame(message_box)
         frame.pack(pady=20, padx=20, fill='both')
