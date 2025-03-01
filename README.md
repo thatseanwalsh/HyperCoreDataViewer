@@ -2,8 +2,8 @@
 # HyperCore API Data Viewer
 [![Pre-Release](https://img.shields.io/github/v/release/thatseanwalsh/HyperCoreDataViewer?filter=*-beta&display_name=release&style=for-the-badge&label=PRE-RELEASE)](https://github.com/thatseanwalsh/HyperCoreDataViewer/releases/tag/v1.1.0-beta)
 [![Release](https://img.shields.io/github/v/release/thatseanwalsh/hypercoredataviewer.svg?style=for-the-badge)](https://github.com/thatseanwalsh/HyperCoreDataViewer/releases/latest)
-[![Build MacOS DMG](https://img.shields.io/github/actions/workflow/status/thatseanwalsh/hypercoredataviewer/build-macos.yml?style=for-the-badge&label=macos%20build)](https://github.com/thatseanwalsh/HyperCoreDataViewer/actions/workflows/build-macos.yml)
-[![Build Windows DMG](https://img.shields.io/github/actions/workflow/status/thatseanwalsh/hypercoredataviewer/build-windows.yml?style=for-the-badge&label=windows%20build)](https://github.com/thatseanwalsh/HyperCoreDataViewer/actions/workflows/build-windows.yml)
+[![Build MacOS DMG](https://img.shields.io/github/actions/workflow/status/thatseanwalsh/hypercoredataviewer/build-macos.yml?style=for-the-badge&label=mac%20build)](https://github.com/thatseanwalsh/HyperCoreDataViewer/actions/workflows/build-macos.yml)
+[![Build Windows EXE](https://img.shields.io/github/actions/workflow/status/thatseanwalsh/hypercoredataviewer/build-windows.yml?style=for-the-badge&label=win%20build)](https://github.com/thatseanwalsh/HyperCoreDataViewer/actions/workflows/build-windows.yml)
 
 <!-- TABLE OF CONTENTS -->
 <details>
