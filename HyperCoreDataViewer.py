@@ -55,6 +55,7 @@ class ClusterApp:
                 return os.path.join(os.path.abspath("./assets"), relative_path) # Adjust for CLI
         
         self.root.title("SC//HyperCore Data Viewer")
+        self.root.configure(bg="#1e1e1e") 
         if platform.system() == "Windows":
             icon_path = resource_path("icon.ico")  # .ico for Windows
             self.root.iconbitmap(icon_path)
@@ -67,7 +68,6 @@ class ClusterApp:
         logo_path = resource_path("logo.png")
         icon_image = Image.open(icon_png_path)
 
-        ctk.set_appearance_mode("dark")
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         window_width = 1024
@@ -228,7 +228,7 @@ class ClusterApp:
         settings_window.transient(self.root)
         settings_window.focus_set()
         settings_window.grab_set()
-        ctk.set_appearance_mode("dark")
+        settings_window.configure(bg="#1e1e1e") 
 
         window_width = 300
         window_height = 230
@@ -269,9 +269,6 @@ class ClusterApp:
         settings_window.bind("<Return>", lambda event: save_settings())
         
         frame.columnconfigure(1, weight=1)
-
-        for widget in settings_window.winfo_children():
-            widget.configure(fg_color="#2e2e2e", bg_color="#1e1e1e", text_color="white")
 
     def update_cluster_columns(self, columns):
         for col in self.cluster_tree["columns"]:
@@ -378,6 +375,7 @@ class ClusterApp:
         message_box = Toplevel(self.root)
         message_box.title("Message")
         message_box.transient(self.root)
+        message_box.configure(bg="#1e1e1e") 
         message_box.grab_set()
         message_box.focus_set()
         width = 250
@@ -385,7 +383,6 @@ class ClusterApp:
         x = (message_box.winfo_screenwidth() // 2) - (width // 2)
         y = (message_box.winfo_screenheight() // 2) - (height // 2)
         message_box.geometry(f"{width}x{height}+{x}+{y}")
-        ctk.set_appearance_mode("dark")
 
         frame = ctk.CTkFrame(message_box)
         frame.pack(pady=20, padx=20, fill='both')
@@ -398,9 +395,6 @@ class ClusterApp:
         message_box.bind("<Return>", lambda event: message_box.destroy())
 
         message_box.protocol("WM_DELETE_WINDOW", message_box.destroy)
-
-        for widget in message_box.winfo_children():
-            widget.configure(fg_color="#2e2e2e", bg_color="#1e1e1e", text_color="white")
 
     # Data fetch
     def fetch_data(self, view_type):
@@ -611,10 +605,6 @@ class ClusterApp:
     def export(self):
         self.fetch_data(view_type="vm")
         self.fetch_data(view_type="cluster")
-
-        if not self.processed_vms or not self.processed_cluster:
-            self.show_message_box("Error: Insufficient data to export!")
-            return
 
         file_path = filedialog.asksaveasfilename(defaultextension=".xlsx", filetypes=[("Excel files", "*.xlsx"), ("All Files", "*.*")])
         if not file_path:
