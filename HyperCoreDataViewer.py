@@ -228,7 +228,8 @@ class ClusterApp:
         settings_window.transient(self.root)
         settings_window.focus_set()
         settings_window.grab_set()
-        settings_window.configure(bg="#1e1e1e") 
+        settings_window.configure(bg="#1e1e1e")
+        ctk.set_appearance_mode("dark")
 
         window_width = 300
         window_height = 230
@@ -383,6 +384,7 @@ class ClusterApp:
         x = (message_box.winfo_screenwidth() // 2) - (width // 2)
         y = (message_box.winfo_screenheight() // 2) - (height // 2)
         message_box.geometry(f"{width}x{height}+{x}+{y}")
+        ctk.set_appearance_mode("dark")
 
         frame = ctk.CTkFrame(message_box)
         frame.pack(pady=20, padx=20, fill='both')
