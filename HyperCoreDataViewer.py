@@ -12,7 +12,7 @@ HyperCoreDataViewer.py: An application to use the Scale Computing
 """
 
 import customtkinter as ctk
-from tkinter import Toplevel, ttk, filedialog, VERTICAL, HORIZONTAL
+from tkinter import Toplevel, ttk, filedialog, VERTICAL, HORIZONTAL, font
 from PIL import Image, ImageTk 
 import base64
 import http.client as http
@@ -20,7 +20,6 @@ import json
 import ssl
 import pandas as pd
 import xml.etree.ElementTree as ET
-from tkinter import font
 import os
 import sys
 import platform
@@ -73,6 +72,9 @@ class ClusterApp:
         icon_png_path = self.resource_path("icon.png")
         logo_path = self.resource_path("logo.png")
         icon_image = Image.open(icon_png_path)
+        font_path = self.resource_path("MartelSans-Regular.ttf")
+        martel_sans_font = font.Font(family="Martel Sans", size=14)
+        self.root.tk.call("font", "create", "MartelSans", "-family", "Martel Sans", "-size", "14")
 
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
@@ -94,17 +96,17 @@ class ClusterApp:
         self.button_frame_top.pack(pady=(5,0))
 
         # View buttons
-        self.view_button1 = ctk.CTkButton(self.button_frame_top, text="Cluster", command=self.switch_view_cluster, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.view_button1 = ctk.CTkButton(self.button_frame_top, text="Cluster", command=self.switch_view_cluster, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
         self.view_button1.pack(side=ctk.LEFT, padx=10, pady=10)
 
-        self.view_button2 = ctk.CTkButton(self.button_frame_top, text="Node", command=self.switch_view_node, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.view_button2 = ctk.CTkButton(self.button_frame_top, text="Node", command=self.switch_view_node, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
         self.view_button2.pack(side=ctk.LEFT, padx=10, pady=10)
 
-        self.view_button3 = ctk.CTkButton(self.button_frame_top, text="Virtual Machines", command=self.switch_view_vm, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.view_button3 = ctk.CTkButton(self.button_frame_top, text="Virtual Machines", command=self.switch_view_vm, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
         self.view_button3.pack(side=ctk.LEFT, padx=10, pady=10)
 
         # Instructions box
-        self.instructions = ctk.CTkTextbox(self.top_frame, height=150, width=500, font=("Martel Sans", 12), padx=10)
+        self.instructions = ctk.CTkTextbox(self.top_frame, height=150, width=500, font=("MartelSans", 12), padx=10)
         self.instructions.insert(ctk.END, "Instructions:\n1. Create a read-only user in your SC//HyperCore user interface.\n"
                                         "2. Click 'Settings' to enter cluster credentials.\n"
                                         "3. Click 'Fetch Data' to load the cluster's information.\n"
@@ -164,7 +166,7 @@ class ClusterApp:
         style.configure("Treeview.Heading",
                 background="#3e3e3e",
                 foreground="white",
-                font=("Martel Sans", 14),
+                font=("MartelSans", 14),
                 borderwidth=0,
                 anchor="w",
                 padding=(5, 5))
@@ -178,7 +180,7 @@ class ClusterApp:
                 foreground="#ffffff",
                 rowheight=30,
                 fieldbackground="#2e2e2e",
-                font=("Martel Sans", 14),
+                font=("MartelSans", 14),
                 borderwidth=0,
                 padding=(5, 5))
 
@@ -202,10 +204,10 @@ class ClusterApp:
         self.button_frame = ctk.CTkFrame(self.root)
         self.button_frame.pack(pady=(0,10))
 
-        self.settings_button = ctk.CTkButton(self.button_frame, text="Settings", command=self.open_settings, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.settings_button = ctk.CTkButton(self.button_frame, text="Settings", command=self.open_settings, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
         self.settings_button.pack(side=ctk.LEFT, padx=10, pady=10)
 
-        self.export_button = ctk.CTkButton(self.button_frame, text="Export", command=self.export, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.export_button = ctk.CTkButton(self.button_frame, text="Export", command=self.export, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
         self.export_button.pack(side=ctk.LEFT, padx=10, pady=10)
 
     def switch_view_cluster(self):
@@ -258,19 +260,19 @@ class ClusterApp:
         frame = ctk.CTkFrame(settings_window)
         frame.pack(pady=20, padx=20, fill='both', expand=True)
 
-        ctk.CTkLabel(frame, text="Node IP:", font=("Martel Sans", 14)).grid(row=0, column=0, padx=10, pady=(15, 5), sticky='w')
-        node_ip_entry = ctk.CTkEntry(frame, font=("Martel Sans", 14))
+        ctk.CTkLabel(frame, text="Node IP:", font=("MartelSans", 14)).grid(row=0, column=0, padx=10, pady=(15, 5), sticky='w')
+        node_ip_entry = ctk.CTkEntry(frame, font=("MartelSans", 14))
         node_ip_entry.grid(row=0, column=1, padx=10, pady=(15, 5), sticky='ew')
         node_ip_entry.insert(0, self.cluster_ip)
         node_ip_entry.focus()
 
-        ctk.CTkLabel(frame, text="Username:", font=("Martel Sans", 14)).grid(row=1, column=0, padx=10, pady=5, sticky='w')
-        username_entry = ctk.CTkEntry(frame, font=("Martel Sans", 14))
+        ctk.CTkLabel(frame, text="Username:", font=("MartelSans", 14)).grid(row=1, column=0, padx=10, pady=5, sticky='w')
+        username_entry = ctk.CTkEntry(frame, font=("MartelSans", 14))
         username_entry.grid(row=1, column=1, padx=10, pady=5, sticky='ew')
         username_entry.insert(0, self.username)
 
-        ctk.CTkLabel(frame, text="Password:", font=("Martel Sans", 14)).grid(row=2, column=0, padx=10, pady=5, sticky='w')
-        password_entry = ctk.CTkEntry(frame, font=("Martel Sans", 14), show="*")
+        ctk.CTkLabel(frame, text="Password:", font=("MartelSans", 14)).grid(row=2, column=0, padx=10, pady=5, sticky='w')
+        password_entry = ctk.CTkEntry(frame, font=("MartelSans", 14), show="*")
         password_entry.grid(row=2, column=1, padx=10, pady=5, sticky='ew')
         password_entry.insert(0, self.password)
 
@@ -281,7 +283,7 @@ class ClusterApp:
             settings_window.destroy()
             self.fetch_data(self.current_view)
 
-        save_button = ctk.CTkButton(frame, text="Fetch Data", command=save_settings, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        save_button = ctk.CTkButton(frame, text="Fetch Data", command=save_settings, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
         save_button.grid(row=3, column=0, columnspan=2, pady=10)
         settings_window.bind("<Return>", lambda event: save_settings())
         
@@ -410,10 +412,10 @@ class ClusterApp:
         frame = ctk.CTkFrame(message_box)
         frame.pack(pady=20, padx=20, fill='both')
 
-        label = ctk.CTkLabel(frame, text=error_message, font=("Martel Sans", 14), wraplength=200)
+        label = ctk.CTkLabel(frame, text=error_message, font=("MartelSans", 14), wraplength=200)
         label.pack(pady=5, padx=5)
 
-        button = ctk.CTkButton(message_box, text="OK", command=message_box.destroy, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        button = ctk.CTkButton(message_box, text="OK", command=message_box.destroy, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
         button.pack(pady=5)
         message_box.bind("<Return>", lambda event: message_box.destroy())
 
@@ -621,7 +623,7 @@ class ClusterApp:
             ""
         ), tags=('total'))
 
-        self.vm_tree.tag_configure('total', background='#e3004b', foreground='white', font=("Martel Sans", 14))
+        self.vm_tree.tag_configure('total', background='#e3004b', foreground='white', font=("MartelSans", 14))
         self.vm_tree.tag_configure('separator', background='#2e2e2e')
 
     # Export to Excel function

@@ -28,7 +28,8 @@ jobs:
         run: |
           pyinstaller --noconfirm --onefile --windowed --name "HyperCoreDataViewer" `
           --icon=assets/icon.ico --add-data "assets/logo.png;assets" `
-          --add-data "assets/icon.png;assets" --add-data "assets/icon.ico;assets" HyperCoreDataViewer.py
+          --add-data "assets/icon.png;assets" --add-data "assets/icon.ico;assets" `
+          --add-data="assets/MartelSans-Regular.ttf;assets" HyperCoreDataViewer.py
 
       - name: 📂 Create EXE
         run: |
