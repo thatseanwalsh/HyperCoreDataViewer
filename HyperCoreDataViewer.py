@@ -233,7 +233,6 @@ class ClusterApp:
         self.current_view = view_type 
         settings_window = ctk.CTkToplevel(self.root)
         settings_window.title("Settings")
-        settings_window.iconbitmap("icon.ico")
         settings_window.transient(self.root)
         settings_window.focus_set()
         settings_window.grab_set()
