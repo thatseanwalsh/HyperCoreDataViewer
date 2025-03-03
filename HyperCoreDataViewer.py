@@ -28,7 +28,7 @@ import ctypes
 # Global dark mode settings (fixes Windows issues)
 ctk.set_appearance_mode("dark")
 def apply_dark_title_bar(window):
-            if platform == "Windows": 
+            if platform.system() == "Windows": 
                     hwnd = ctypes.windll.user32.GetParent(window.winfo_id())  
                     DWMWA_USE_IMMERSIVE_DARK_MODE = 20  # Dark mode flag
                     ctypes.windll.dwmapi.DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ctypes.byref(ctypes.c_int(1)), ctypes.sizeof(ctypes.c_int(1)))
@@ -395,9 +395,13 @@ class ClusterApp:
         message_box.transient(self.root)
         message_box.configure(bg="#2e2e2e")
         if platform.system() == "Windows":
-            message_box.iconbitmap(self.root.iconbitmap)
+            icon_path = self.resource_path("icon.ico") 
+            message_box.iconbitmap(icon_path)
         elif platform.system() == "Darwin":
-            message_box.iconphoto(True, self.root.iconphoto) 
+            icon_path = self.resource_path("icon.icns")
+            icon_image = Image.open(icon_path)
+            icon_photo = ImageTk.PhotoImage(icon_image)
+            message_box.iconphoto(True, icon_photo)
         apply_dark_title_bar(message_box)
         message_box.grab_set()
         message_box.focus_set()
