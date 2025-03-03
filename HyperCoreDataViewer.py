@@ -110,7 +110,7 @@ class ClusterApp:
         self.instructions.insert(ctk.END, "Instructions:\n1. Create a read-only user in your SC//HyperCore user interface.\n"
                                         "2. Click 'Settings' to enter cluster credentials.\n"
                                         "3. Click 'Fetch Data' to load the cluster's information.\n"
-                                        "4. Click 'Export' to export the collected data to a spreadsheet.\n"
+                                        "4. Click 'Export' to export the collected data to a spreadsheet.\n\n\n\n"
                                         "This tool is not endorsed or supported by Scale Computing. Use at your own risk.")
         self.instructions.configure(state="disabled") 
         self.instructions.pack(side=ctk.RIGHT, padx=10, pady=10, fill=ctk.X, expand=True)
@@ -198,7 +198,7 @@ class ClusterApp:
         self.vm_tree.tag_configure('oddrow', background='#2e2e2e')
         self.vm_tree.tag_configure('evenrow', background='#1e1e1e')
 
-        self.cluster_frame.pack_forget()
+        self.node_frame.pack_forget()
         self.vm_frame.pack_forget()
 
         self.button_frame = ctk.CTkFrame(self.root)
