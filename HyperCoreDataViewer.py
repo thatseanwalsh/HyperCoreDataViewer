@@ -99,8 +99,8 @@ class ClusterApp:
         self.view_button1 = ctk.CTkButton(self.button_frame_top, text="Cluster", command=self.switch_view_cluster, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
         self.view_button1.pack(side=ctk.LEFT, padx=10, pady=10)
 
-        # self.view_button2 = ctk.CTkButton(self.button_frame_top, text="Node", command=self.switch_view_node, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
-        # self.view_button2.pack(side=ctk.LEFT, padx=10, pady=10)
+        self.view_button2 = ctk.CTkButton(self.button_frame_top, text="Node", command=self.switch_view_node, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.view_button2.pack(side=ctk.LEFT, padx=10, pady=10)
 
         self.view_button3 = ctk.CTkButton(self.button_frame_top, text="Virtual Machines", command=self.switch_view_vm, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
         self.view_button3.pack(side=ctk.LEFT, padx=10, pady=10)
