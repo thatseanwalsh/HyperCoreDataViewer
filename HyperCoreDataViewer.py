@@ -12,7 +12,7 @@ HyperCoreDataViewer.py: An application to use the Scale Computing
 """
 
 import customtkinter as ctk
-from tkinter import Toplevel, ttk, filedialog, VERTICAL, HORIZONTAL
+from tkinter import Toplevel, ttk, filedialog, VERTICAL, HORIZONTAL, font
 from PIL import Image, ImageTk 
 import base64
 import http.client as http
@@ -20,9 +20,18 @@ import json
 import ssl
 import pandas as pd
 import xml.etree.ElementTree as ET
-from tkinter import font
 import os
 import sys
+import platform
+import ctypes
+
+# Global dark mode settings (fixes Windows issues)
+ctk.set_appearance_mode("dark")
+def apply_dark_title_bar(window):
+            if platform.system() == "Windows": 
+                    hwnd = ctypes.windll.user32.GetParent(window.winfo_id())  
+                    DWMWA_USE_IMMERSIVE_DARK_MODE = 20  # Dark mode flag
+                    ctypes.windll.dwmapi.DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ctypes.byref(ctypes.c_int(1)), ctypes.sizeof(ctypes.c_int(1)))
 
 class ClusterApp:
     def __init__(self, root):
@@ -36,25 +45,36 @@ class ClusterApp:
         self.processed_cluster = {}
         self.setup_gui()
 
+    def resource_path(self, relative_path):
+        if getattr(sys, 'frozen', False):  # Compiled bundle check
+            base_path = os.path.dirname(sys.executable)
+
+            if platform.system() == "Windows":
+                base_path = sys._MEIPASS
+                return os.path.join(base_path, "assets", relative_path)  # Adjust for Windows
+            elif platform.system() == "Darwin": 
+                return os.path.join(base_path, "../Resources", relative_path)  # Adjust for macOS
+        else:
+            return os.path.join(os.path.abspath("./assets"), relative_path) # Adjust for CLI
+
     # GUI setup, logos, icons, and the like
     def setup_gui(self):
-        def resource_path(relative_path):
-            if getattr(sys, 'frozen', False):
-                # Running in a compiled bundle
-                base_path = os.path.dirname(sys.executable)  
-                return os.path.join(base_path, "../Resources", relative_path)
-            else:
-                # Running as a script
-                return os.path.join(os.path.abspath("../assets"), relative_path)
-        
         self.root.title("SC//HyperCore Data Viewer")
-        icon_path = resource_path("icon.icns")
-        self.root.iconbitmap(icon_path) 
-        icon_png_path = resource_path("icon.png")
-        logo_path = resource_path("logo.png")
+        self.root.configure(bg="#2e2e2e") 
+        if platform.system() == "Windows":
+            icon_path = self.resource_path("icon.ico")
+            self.root.iconbitmap(icon_path)
+        elif platform.system() == "Darwin":
+            icon_path = self.resource_path("icon.icns")
+            icon_image = Image.open(icon_path)
+            icon_photo = ImageTk.PhotoImage(icon_image)
+            self.root.iconphoto(True, icon_photo)
+        icon_png_path = self.resource_path("icon.png")
+        logo_path = self.resource_path("logo.png")
         icon_image = Image.open(icon_png_path)
-        icon_photo = ImageTk.PhotoImage(icon_image)
-        self.root.iconphoto(True, icon_photo)
+        font_path = self.resource_path("MartelSans-Regular.ttf")
+        martel_sans_font = font.Font(family="Martel Sans", size=14)
+        self.root.tk.call("font", "create", "MartelSans", "-family", "Martel Sans", "-size", "14")
 
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
@@ -76,18 +96,21 @@ class ClusterApp:
         self.button_frame_top.pack(pady=(5,0))
 
         # View buttons
-        self.view_button1 = ctk.CTkButton(self.button_frame_top, text="Cluster", command=self.switch_view_cluster, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.view_button1 = ctk.CTkButton(self.button_frame_top, text="Cluster", command=self.switch_view_cluster, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
         self.view_button1.pack(side=ctk.LEFT, padx=10, pady=10)
 
-        self.view_button2 = ctk.CTkButton(self.button_frame_top, text="Virtual Machines", command=self.switch_view_vm, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
-        self.view_button2.pack(side=ctk.LEFT, padx=10, pady=10)
+        # self.view_button2 = ctk.CTkButton(self.button_frame_top, text="Node", command=self.switch_view_node, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        # self.view_button2.pack(side=ctk.LEFT, padx=10, pady=10)
+
+        self.view_button3 = ctk.CTkButton(self.button_frame_top, text="Virtual Machines", command=self.switch_view_vm, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.view_button3.pack(side=ctk.LEFT, padx=10, pady=10)
 
         # Instructions box
-        self.instructions = ctk.CTkTextbox(self.top_frame, height=150, width=500, font=("Martel Sans", 12), padx=10)
+        self.instructions = ctk.CTkTextbox(self.top_frame, height=150, width=500, font=("MartelSans", 12), padx=10)
         self.instructions.insert(ctk.END, "Instructions:\n1. Create a read-only user in your SC//HyperCore user interface.\n"
                                         "2. Click 'Settings' to enter cluster credentials.\n"
                                         "3. Click 'Fetch Data' to load the cluster's information.\n"
-                                        "4. Click 'Export' to export the collected data to a spreadsheet.\n"
+                                        "4. Click 'Export' to export the collected data to a spreadsheet.\n\n\n\n"
                                         "This tool is not endorsed or supported by Scale Computing. Use at your own risk.")
         self.instructions.configure(state="disabled") 
         self.instructions.pack(side=ctk.RIGHT, padx=10, pady=10, fill=ctk.X, expand=True)
@@ -95,13 +118,17 @@ class ClusterApp:
         self.main_frame = ctk.CTkFrame(self.root)
         self.main_frame.pack(fill=ctk.BOTH, expand=True, padx=20, pady=(10,10))
 
-        self.vm_frame = ctk.CTkFrame(self.main_frame)
-        self.vm_frame.pack(fill=ctk.BOTH, expand=True)
-        self.vm_tree = ttk.Treeview(self.vm_frame, show="headings")
-
         self.cluster_frame = ctk.CTkFrame(self.main_frame)
         self.cluster_frame.pack(fill=ctk.BOTH, expand=True)
         self.cluster_tree = ttk.Treeview(self.cluster_frame, show="headings")
+
+        self.node_frame = ctk.CTkFrame(self.main_frame)
+        self.node_frame.pack(fill=ctk.BOTH, expand=True)
+        self.node_tree = ttk.Treeview(self.node_frame, show="headings")
+
+        self.vm_frame = ctk.CTkFrame(self.main_frame)
+        self.vm_frame.pack(fill=ctk.BOTH, expand=True)
+        self.vm_tree = ttk.Treeview(self.vm_frame, show="headings")
 
         # Create scrollbars
         self.vm_tree_scroll_x = ctk.CTkScrollbar(self.vm_frame, orientation="horizontal", command=self.vm_tree.xview)
@@ -110,6 +137,8 @@ class ClusterApp:
         self.vm_tree_scroll_y.pack(side=ctk.RIGHT, fill=ctk.Y)
         self.cluster_tree_scroll_y = ctk.CTkScrollbar(self.cluster_frame, orientation="vertical", command=self.cluster_tree.yview)
         self.cluster_tree_scroll_y.pack(side=ctk.RIGHT, fill=ctk.Y)
+        self.node_tree_scroll_y = ctk.CTkScrollbar(self.node_frame, orientation="vertical", command=self.node_tree.yview)
+        self.node_tree_scroll_y.pack(side=ctk.RIGHT, fill=ctk.Y)
         
         # Create treeview
         self.vm_tree = ttk.Treeview(
@@ -118,15 +147,18 @@ class ClusterApp:
             yscrollcommand=self.vm_tree_scroll_y.set
         )
         self.cluster_tree = ttk.Treeview(self.cluster_frame, show="headings", yscrollcommand=self.cluster_tree_scroll_y.set)
-        
+        self.node_tree = ttk.Treeview(self.node_frame, show="headings", yscrollcommand=self.node_tree_scroll_y.set)
+
         # Pack the treeview 
-        self.vm_tree.pack(fill=ctk.BOTH, expand=True, padx=(0, 10), pady=(0, 10))
         self.cluster_tree.pack(fill=ctk.BOTH, expand=True, padx=(0, 10), pady=(0, 10))
+        self.node_tree.pack(fill=ctk.BOTH, expand=True, padx=(0, 10), pady=(0, 10))
+        self.vm_tree.pack(fill=ctk.BOTH, expand=True, padx=(0, 10), pady=(0, 10))
 
         # Configure treeview scrollbars
         self.vm_tree_scroll_x.configure(command=self.vm_tree.xview)
         self.vm_tree_scroll_y.configure(command=self.vm_tree.yview)
         self.cluster_tree_scroll_y.configure(command=self.cluster_tree.yview)
+        self.node_tree_scroll_y.configure(command=self.node_tree.yview)
 
         # Treeview styling
         style = ttk.Style()
@@ -134,7 +166,7 @@ class ClusterApp:
         style.configure("Treeview.Heading",
                 background="#3e3e3e",
                 foreground="white",
-                font=("Martel Sans", 14),
+                font=("MartelSans", 14),
                 borderwidth=0,
                 anchor="w",
                 padding=(5, 5))
@@ -148,7 +180,7 @@ class ClusterApp:
                 foreground="#ffffff",
                 rowheight=30,
                 fieldbackground="#2e2e2e",
-                font=("Martel Sans", 14),
+                font=("MartelSans", 14),
                 borderwidth=0,
                 padding=(5, 5))
 
@@ -156,43 +188,65 @@ class ClusterApp:
                 background=[("selected", "#e67b34")],
                 foreground=[("selected", "#ffffff")])
 
-        self.vm_tree.pack(fill=ctk.BOTH, expand=True, padx=10, pady=10)
-        self.vm_tree.tag_configure('oddrow', background='#2e2e2e')
-        self.vm_tree.tag_configure('evenrow', background='#1e1e1e')
         self.cluster_tree.pack(fill=ctk.BOTH, expand=True, padx=10, pady=10)
         self.cluster_tree.tag_configure('oddrow', background='#2e2e2e')
         self.cluster_tree.tag_configure('evenrow', background='#1e1e1e')
+        self.node_tree.pack(fill=ctk.BOTH, expand=True, padx=10, pady=10)
+        self.node_tree.tag_configure('oddrow', background='#2e2e2e')
+        self.node_tree.tag_configure('evenrow', background='#1e1e1e')
+        self.vm_tree.pack(fill=ctk.BOTH, expand=True, padx=10, pady=10)
+        self.vm_tree.tag_configure('oddrow', background='#2e2e2e')
+        self.vm_tree.tag_configure('evenrow', background='#1e1e1e')
 
+        self.node_frame.pack_forget()
         self.vm_frame.pack_forget()
-        self.cluster_frame.pack_forget()
 
         self.button_frame = ctk.CTkFrame(self.root)
         self.button_frame.pack(pady=(0,10))
 
-        self.settings_button = ctk.CTkButton(self.button_frame, text="Settings", command=self.open_settings, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.settings_button = ctk.CTkButton(self.button_frame, text="Settings", command=self.open_settings, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
         self.settings_button.pack(side=ctk.LEFT, padx=10, pady=10)
 
-        self.export_button = ctk.CTkButton(self.button_frame, text="Export", command=self.export, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.export_button = ctk.CTkButton(self.button_frame, text="Export", command=self.export, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
         self.export_button.pack(side=ctk.LEFT, padx=10, pady=10)
-
-    def switch_view_vm(self):
-        self.fetch_data(view_type="vm")
-        self.vm_frame.pack(fill=ctk.BOTH, expand=True)
-        self.cluster_frame.pack_forget()
 
     def switch_view_cluster(self):
         self.fetch_data(view_type="cluster")
         self.cluster_frame.pack(fill=ctk.BOTH, expand=True)
         self.vm_frame.pack_forget() 
+        self.node_frame.pack_forget() 
+
+    def switch_view_node(self):
+        self.fetch_data(view_type="node")
+        self.node_frame.pack(fill=ctk.BOTH, expand=True)
+        self.vm_frame.pack_forget()
+        self.cluster_frame.pack_forget()
+
+    def switch_view_vm(self):
+        self.fetch_data(view_type="vm")
+        self.vm_frame.pack(fill=ctk.BOTH, expand=True)
+        self.cluster_frame.pack_forget()
+        self.node_frame.pack_forget()
 
     # Settings modal
     def open_settings(self, view_type="cluster"):
         self.current_view = view_type 
-        settings_window = Toplevel(self.root)
+        settings_window = ctk.CTkToplevel(self.root)
         settings_window.title("Settings")
         settings_window.transient(self.root)
         settings_window.focus_set()
         settings_window.grab_set()
+        settings_window.configure(bg="#2e2e2e")
+        ctk.set_appearance_mode("dark")
+        apply_dark_title_bar(settings_window)
+        if platform.system() == "Windows":
+            icon_path = self.resource_path("icon.ico") 
+            settings_window.iconbitmap(icon_path)
+        elif platform.system() == "Darwin":
+            icon_path = self.resource_path("icon.icns")
+            icon_image = Image.open(icon_path)
+            icon_photo = ImageTk.PhotoImage(icon_image)
+            settings_window.iconphoto(True, icon_photo)
 
         window_width = 300
         window_height = 230
@@ -205,19 +259,19 @@ class ClusterApp:
         frame = ctk.CTkFrame(settings_window)
         frame.pack(pady=20, padx=20, fill='both', expand=True)
 
-        ctk.CTkLabel(frame, text="Node IP:", font=("Martel Sans", 14)).grid(row=0, column=0, padx=10, pady=(15, 5), sticky='w')
-        node_ip_entry = ctk.CTkEntry(frame, font=("Martel Sans", 14))
+        ctk.CTkLabel(frame, text="Node IP:", font=("MartelSans", 14)).grid(row=0, column=0, padx=10, pady=(15, 5), sticky='w')
+        node_ip_entry = ctk.CTkEntry(frame, font=("MartelSans", 14))
         node_ip_entry.grid(row=0, column=1, padx=10, pady=(15, 5), sticky='ew')
         node_ip_entry.insert(0, self.cluster_ip)
         node_ip_entry.focus()
 
-        ctk.CTkLabel(frame, text="Username:", font=("Martel Sans", 14)).grid(row=1, column=0, padx=10, pady=5, sticky='w')
-        username_entry = ctk.CTkEntry(frame, font=("Martel Sans", 14))
+        ctk.CTkLabel(frame, text="Username:", font=("MartelSans", 14)).grid(row=1, column=0, padx=10, pady=5, sticky='w')
+        username_entry = ctk.CTkEntry(frame, font=("MartelSans", 14))
         username_entry.grid(row=1, column=1, padx=10, pady=5, sticky='ew')
         username_entry.insert(0, self.username)
 
-        ctk.CTkLabel(frame, text="Password:", font=("Martel Sans", 14)).grid(row=2, column=0, padx=10, pady=5, sticky='w')
-        password_entry = ctk.CTkEntry(frame, font=("Martel Sans", 14), show="*")
+        ctk.CTkLabel(frame, text="Password:", font=("MartelSans", 14)).grid(row=2, column=0, padx=10, pady=5, sticky='w')
+        password_entry = ctk.CTkEntry(frame, font=("MartelSans", 14), show="*")
         password_entry.grid(row=2, column=1, padx=10, pady=5, sticky='ew')
         password_entry.insert(0, self.password)
 
@@ -228,11 +282,41 @@ class ClusterApp:
             settings_window.destroy()
             self.fetch_data(self.current_view)
 
-        save_button = ctk.CTkButton(frame, text="Fetch Data", command=save_settings, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        save_button = ctk.CTkButton(frame, text="Fetch Data", command=save_settings, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
         save_button.grid(row=3, column=0, columnspan=2, pady=10)
         settings_window.bind("<Return>", lambda event: save_settings())
         
         frame.columnconfigure(1, weight=1)
+
+    def update_cluster_columns(self, columns):
+        for col in self.cluster_tree["columns"]:
+            self.cluster_tree.heading(col, text="")
+        
+        self.cluster_tree["columns"] = columns
+        for col in columns:
+            self.cluster_tree.heading(col, text=col, anchor="w")
+            if col in ["Tag"]:
+                self.cluster_tree.column(col, anchor="w", width=200, stretch=False)
+            else:
+                self.cluster_tree.column(col, anchor="w", width=750, stretch=True)
+        
+        for item in self.cluster_tree.get_children():
+            self.cluster_tree.delete(item)
+
+    def update_node_columns(self, columns):
+        for col in self.node_tree["columns"]:
+            self.node_tree.heading(col, text="")
+        
+        self.node_tree["columns"] = columns
+        for col in columns:
+            self.node_tree.heading(col, text=col, anchor="w")
+            if col in ["TO BE DEFINED"]:
+                self.node_tree.column(col, anchor="w", width=200, stretch=False)
+            else:
+                self.node_tree.column(col, anchor="w", width=750, stretch=True)
+        
+        for item in self.node_tree.get_children():
+            self.node_tree.delete(item)     
 
     def update_vm_columns(self, columns):
         for col in self.vm_tree["columns"]:
@@ -253,21 +337,6 @@ class ClusterApp:
         
         for item in self.vm_tree.get_children():
             self.vm_tree.delete(item)
-
-    def update_cluster_columns(self, columns):
-        for col in self.cluster_tree["columns"]:
-            self.cluster_tree.heading(col, text="")
-        
-        self.cluster_tree["columns"] = columns
-        for col in columns:
-            self.cluster_tree.heading(col, text=col, anchor="w")
-            if col in ["Tag"]:
-                self.cluster_tree.column(col, anchor="w", width=200, stretch=False)
-            else:
-                self.cluster_tree.column(col, anchor="w", width=750, stretch=True)
-        
-        for item in self.cluster_tree.get_children():
-            self.cluster_tree.delete(item)     
 
     def sort_vm_tree(self, col, reverse=False):
         children = self.vm_tree.get_children("")
@@ -307,19 +376,33 @@ class ClusterApp:
     def alternate_row_colors(self):
         children = self.vm_tree.get_children()
         
-        for index, item in enumerate(self.vm_tree.get_children()):
-            tag = 'evenrow' if index % 2 == 0 else 'oddrow'
-            self.vm_tree.item(item, tags=(tag,))
-
         for index, item in enumerate(self.cluster_tree.get_children()):
             tag = 'evenrow' if index % 2 == 0 else 'oddrow'
             self.cluster_tree.item(item, tags=(tag,))
+
+        for index, item in enumerate(self.node_tree.get_children()):
+            tag = 'evenrow' if index % 2 == 0 else 'oddrow'
+            self.node_tree.item(item, tags=(tag,))
+
+        for index, item in enumerate(self.vm_tree.get_children()):
+            tag = 'evenrow' if index % 2 == 0 else 'oddrow'
+            self.vm_tree.item(item, tags=(tag,))
     
     # Error/message box 
     def show_message_box(self, error_message):
-        message_box = Toplevel(self.root)
+        message_box = ctk.CTkToplevel(self.root)
         message_box.title("Message")
         message_box.transient(self.root)
+        message_box.configure(bg="#2e2e2e")
+        if platform.system() == "Windows":
+            icon_path = self.resource_path("icon.ico") 
+            message_box.iconbitmap(icon_path)
+        elif platform.system() == "Darwin":
+            icon_path = self.resource_path("icon.icns")
+            icon_image = Image.open(icon_path)
+            icon_photo = ImageTk.PhotoImage(icon_image)
+            message_box.iconphoto(True, icon_photo)
+        apply_dark_title_bar(message_box)
         message_box.grab_set()
         message_box.focus_set()
         width = 250
@@ -327,14 +410,15 @@ class ClusterApp:
         x = (message_box.winfo_screenwidth() // 2) - (width // 2)
         y = (message_box.winfo_screenheight() // 2) - (height // 2)
         message_box.geometry(f"{width}x{height}+{x}+{y}")
+        ctk.set_appearance_mode("dark")
 
         frame = ctk.CTkFrame(message_box)
         frame.pack(pady=20, padx=20, fill='both')
 
-        label = ctk.CTkLabel(frame, text=error_message, font=("Martel Sans", 14), wraplength=200)
+        label = ctk.CTkLabel(frame, text=error_message, font=("MartelSans", 14), wraplength=200)
         label.pack(pady=5, padx=5)
 
-        button = ctk.CTkButton(message_box, text="OK", command=message_box.destroy, font=("Martel Sans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        button = ctk.CTkButton(message_box, text="OK", command=message_box.destroy, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
         button.pack(pady=5)
         message_box.bind("<Return>", lambda event: message_box.destroy())
 
@@ -542,7 +626,7 @@ class ClusterApp:
             ""
         ), tags=('total'))
 
-        self.vm_tree.tag_configure('total', background='#e3004b', foreground='white', font=("Martel Sans", 14))
+        self.vm_tree.tag_configure('total', background='#e3004b', foreground='white', font=("MartelSans", 14))
         self.vm_tree.tag_configure('separator', background='#2e2e2e')
 
     # Export to Excel function
@@ -550,13 +634,9 @@ class ClusterApp:
         self.fetch_data(view_type="vm")
         self.fetch_data(view_type="cluster")
 
-        if not self.processed_vms or not self.processed_cluster:
-            self.show_message_box("Error: Insufficient data to export!")
-            return
-
         file_path = filedialog.asksaveasfilename(defaultextension=".xlsx", filetypes=[("Excel files", "*.xlsx"), ("All Files", "*.*")])
         if not file_path:
-            return 
+            return
 
         # Prepare VM data
         vm_data = []
