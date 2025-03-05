@@ -26,7 +26,7 @@ jobs:
 
       - name: 🔒 Obfuscate Python Code with PyArmor
         run: |
-          pyarmor obfuscate HyperCoreDataViewer.py
+          pyarmor gen HyperCoreDataViewer.py
 
       - name: 🔨 Build macOS .app Bundle
         run: |
