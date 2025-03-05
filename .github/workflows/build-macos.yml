@@ -44,11 +44,20 @@ jobs:
             --app-drop-link 425 120 \
             "dist/dmg/HyperCoreDataViewer-macOS.dmg" "dist/HyperCoreDataViewer.app"
 
-      - name: 🏗 Upload DMG Artifact
+      - name: 🔐 Generate Checksum for DMG
+        run: |
+          # Generate SHA256 checksum for the DMG file
+          cd dist/dmg
+          sha256sum HyperCoreDataViewer-macOS.dmg > HyperCoreDataViewer-macOS.dmg.sha256
+          cat HyperCoreDataViewer-macOS.dmg.sha256
+
+      - name: 🏗 Upload DMG Artifact and Checksum
         uses: actions/upload-artifact@v4
         with:
           name: MyApp.dmg
-          path: dist/dmg/HyperCoreDataViewer-macOS.dmg
+          path: |
+            dist/dmg/HyperCoreDataViewer-macOS.dmg
+            dist/dmg/HyperCoreDataViewer-macOS.dmg.sha256
 
       - name: 🚀 Publish Release
         uses: softprops/action-gh-release@v2
