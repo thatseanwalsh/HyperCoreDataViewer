@@ -46,7 +46,7 @@ jobs:
 
       - name: 🔐 Generate Checksum for DMG
         run: |
-          # Generate SHA256 checksum for the DMG file
+          brew install coreutils
           cd dist/dmg
           sha256sum HyperCoreDataViewer-macOS.dmg > HyperCoreDataViewer-macOS.dmg.sha256
           cat HyperCoreDataViewer-macOS.dmg.sha256
@@ -62,5 +62,7 @@ jobs:
       - name: 🚀 Publish Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/dmg/HyperCoreDataViewer-macOS.dmg
+          files: |
+            dist/dmg/HyperCoreDataViewer-macOS.dmg
+            dist/dmg/HyperCoreDataViewer-macOS.dmg.sha256
           token: ${{ secrets.HYPERCOREDATAVIEWER }}
