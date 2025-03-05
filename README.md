@@ -29,13 +29,18 @@ Tool to view and export informational data via the SC//HyperCore API for a [Scal
 
 <!-- INSTRUCTIONS -->
 ## Instructions
-If you receive an error stating that Apple could not verify the app, do the following:
+macOS: If you receive an error stating that Apple could not verify the app, do the following:
 1. Ensure you downloaded the application from [this repository](https://github.com/thatseanwalsh/HyperCoreDataViewer/releases).
 2. Then, on your Mac, choose Apple menu  > System Settings.
 3. Next, click Privacy & Security in the sidebar. (You may need to scroll down.)
 4. Go to Security, then click Open.
 5. Click Open Anyway.
 6. Enter your credentials, then click OK.
+
+Windows: If you receive an error stating that Microsoft Defender prevented an unrecognized app from starting, do the following:
+1. Ensure you downloaded the application from [this repository](https://github.com/thatseanwalsh/HyperCoreDataViewer/releases).
+2. Then, click More info.
+3. Click Run anyway.
 
 How to use the application:
 1. Create a read-only user in your SC//HyperCore user interface.
@@ -53,7 +58,7 @@ Scale Computing HyperCore and related images are registered trademarks/copyright
 
 <!-- ROADMAP -->
 ## Roadmap
-- [ ] Package for Windows
+- [x] Package for Windows
 - [ ] Add a new tab for node-specific information
 - [ ] See what else I can add that is of value
 
