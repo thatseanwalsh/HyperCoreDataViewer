@@ -22,15 +22,18 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pyinstaller
+          pip install pyinstaller pyarmor
+
+      - name: 🔒 Obfuscate Python Code with PyArmor
+        run: |
+          pyarmor obfuscate HyperCoreDataViewer.py
 
       - name: 🔨 Build Windows .exe Bundle
         run: |
           pyinstaller --noconfirm --onefile --windowed --name "HyperCoreDataViewer" `
           --icon=assets/icon.ico --add-data "assets/logo.png;assets" `
           --add-data "assets/icon.png;assets" --add-data "assets/icon.ico;assets" `
-          --add-data="assets/MartelSans-Regular.ttf;assets" --encrypt=${{ secrets.ENCRYPTIONKEY }} `
-          HyperCoreDataViewer.py
+          --add-data="assets/MartelSans-Regular.ttf;assets" HyperCoreDataViewer.py
 
       - name: 📂 Create EXE
         run: |
