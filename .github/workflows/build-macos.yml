@@ -29,7 +29,7 @@ jobs:
           pyinstaller --noconfirm --onedir --windowed --name "HyperCoreDataViewer" \
           --icon="assets/icon.icns" --add-data="assets/logo.png:." \
           --add-data="assets/icon.png:." --add-data="assets/MartelSans-Regular.ttf:." \
-          HyperCoreDataViewer.py
+          --encrypt=${{ secrets.ENCRYPTIONKEY }} HyperCoreDataViewer.py
 
       - name: 📂 Create DMG
         run: |
