@@ -37,11 +37,19 @@ jobs:
           mv dist/HyperCoreDataViewer.exe dist/windows/
           cd dist/windows && tar -a -c -f HyperCoreDataViewer-Windows.zip HyperCoreDataViewer.exe
 
+      - name: 🔐 Generate Checksum for EXE
+        run: |
+          cd dist/windows
+          sha256sum HyperCoreDataViewer-Windows.zip > HyperCoreDataViewer-Windows.zip.sha256
+          cat HyperCoreDataViewer-Windows.zip.sha256
+
       - name: 🏗 Upload Windows ZIP Artifact
         uses: actions/upload-artifact@v4
         with:
           name: HyperCoreDataViewer-Windows.zip
-          path: dist/windows/HyperCoreDataViewer-Windows.zip
+          path: |
+            dist/windows/HyperCoreDataViewer-Windows.zip
+            dist/windows/HyperCoreDataViewer-Windows.zip.sha256
 
       - name: 🚀 Publish Release
         uses: softprops/action-gh-release@v2
