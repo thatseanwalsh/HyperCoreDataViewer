@@ -25,7 +25,7 @@ Tool to view and export informational data via the SC//HyperCore API for a [Scal
 
 <!-- SCREENSHOTS -->
 ## Screenshots
-<img src="images/cluster-view.png" width="300" /> <img src="images/vm-view.png" width="300"/>
+<img src=".github/images/cluster-view.png" width="300" /> <img src=".github/images/vm-view.png" width="300"/>
 
 <!-- INSTRUCTIONS -->
 ## Instructions
