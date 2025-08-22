@@ -59,6 +59,7 @@ Scale Computing HyperCore and related images are registered trademarks/copyright
 <!-- ROADMAP -->
 ## Roadmap
 - [x] Package for Windows
+- [x] Update branding (logos, colors, etc.)
 - [ ] Add a new tab for node-specific information
 - [ ] See what else I can add that is of value
 
