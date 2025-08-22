@@ -96,13 +96,13 @@ class ClusterApp:
         self.button_frame_top.pack(pady=(5,0))
 
         # View buttons
-        self.view_button1 = ctk.CTkButton(self.button_frame_top, text="Cluster", command=self.switch_view_cluster, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.view_button1 = ctk.CTkButton(self.button_frame_top, text="Cluster", command=self.switch_view_cluster, font=("MartelSans", 14), fg_color="#194F90", hover_color="#009ADE")
         self.view_button1.pack(side=ctk.LEFT, padx=10, pady=10)
 
-        # self.view_button2 = ctk.CTkButton(self.button_frame_top, text="Node", command=self.switch_view_node, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
-        # self.view_button2.pack(side=ctk.LEFT, padx=10, pady=10)
+        #self.view_button2 = ctk.CTkButton(self.button_frame_top, text="Node", command=self.switch_view_node, font=("MartelSans", 14), fg_color="#194F90", hover_color="#009ADE")
+        #self.view_button2.pack(side=ctk.LEFT, padx=10, pady=10)
 
-        self.view_button3 = ctk.CTkButton(self.button_frame_top, text="Virtual Machines", command=self.switch_view_vm, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.view_button3 = ctk.CTkButton(self.button_frame_top, text="Virtual Machines", command=self.switch_view_vm, font=("MartelSans", 14), fg_color="#194F90", hover_color="#009ADE")
         self.view_button3.pack(side=ctk.LEFT, padx=10, pady=10)
 
         # Instructions box
@@ -172,7 +172,7 @@ class ClusterApp:
                 padding=(5, 5))
         
         style.map("Treeview.Heading",
-                background=[("selected", "#e3004b")],
+                background=[("selected", "#194F90")],
                 foreground=[("selected", "#ffffff")])
         
         style.configure("Treeview",
@@ -185,7 +185,7 @@ class ClusterApp:
                 padding=(5, 5))
 
         style.map("Treeview",
-                background=[("selected", "#e67b34")],
+                background=[("selected", "#009ADE")],
                 foreground=[("selected", "#ffffff")])
 
         self.cluster_tree.pack(fill=ctk.BOTH, expand=True, padx=10, pady=10)
@@ -204,10 +204,10 @@ class ClusterApp:
         self.button_frame = ctk.CTkFrame(self.root)
         self.button_frame.pack(pady=(0,10))
 
-        self.settings_button = ctk.CTkButton(self.button_frame, text="Settings", command=self.open_settings, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.settings_button = ctk.CTkButton(self.button_frame, text="Settings", command=self.open_settings, font=("MartelSans", 14), fg_color="#194F90", hover_color="#009ADE")
         self.settings_button.pack(side=ctk.LEFT, padx=10, pady=10)
 
-        self.export_button = ctk.CTkButton(self.button_frame, text="Export", command=self.export, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        self.export_button = ctk.CTkButton(self.button_frame, text="Export", command=self.export, font=("MartelSans", 14), fg_color="#194F90", hover_color="#009ADE")
         self.export_button.pack(side=ctk.LEFT, padx=10, pady=10)
 
     def switch_view_cluster(self):
@@ -282,7 +282,7 @@ class ClusterApp:
             settings_window.destroy()
             self.fetch_data(self.current_view)
 
-        save_button = ctk.CTkButton(frame, text="Fetch Data", command=save_settings, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        save_button = ctk.CTkButton(frame, text="Fetch Data", command=save_settings, font=("MartelSans", 14), fg_color="#194F90", hover_color="#009ADE")
         save_button.grid(row=3, column=0, columnspan=2, pady=10)
         settings_window.bind("<Return>", lambda event: save_settings())
         
@@ -368,7 +368,7 @@ class ClusterApp:
         if total_item:
             self.vm_tree.item(total_item, tags=('total',))
 
-        self.vm_tree.tag_configure('total', background='#e3004b', foreground='#ffffff')
+        self.vm_tree.tag_configure('total', background='#194F90', foreground='#ffffff')
 
         # Toggle sorting direction
         self.vm_tree.heading(col, command=lambda: self.sort_vm_tree(col, not reverse))
@@ -418,7 +418,7 @@ class ClusterApp:
         label = ctk.CTkLabel(frame, text=error_message, font=("MartelSans", 14), wraplength=200)
         label.pack(pady=5, padx=5)
 
-        button = ctk.CTkButton(message_box, text="OK", command=message_box.destroy, font=("MartelSans", 14), fg_color="#e3004b", hover_color="#e67b34")
+        button = ctk.CTkButton(message_box, text="OK", command=message_box.destroy, font=("MartelSans", 14), fg_color="#194F90", hover_color="#009ADE")
         button.pack(pady=5)
         message_box.bind("<Return>", lambda event: message_box.destroy())
 
@@ -626,7 +626,7 @@ class ClusterApp:
             ""
         ), tags=('total'))
 
-        self.vm_tree.tag_configure('total', background='#e3004b', foreground='white', font=("MartelSans", 14))
+        self.vm_tree.tag_configure('total', background='#194F90', foreground='white', font=("MartelSans", 14))
         self.vm_tree.tag_configure('separator', background='#2e2e2e')
 
     # Export to Excel function
